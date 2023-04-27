@@ -9,10 +9,10 @@ COPY src /src
 COPY pom.xml /pom.xml
 RUN set -ex; \
      mvn -f /pom.xml clean package; \
-     mv /target/*.jar /app/; \
-     rm -rf /target; \
-     rm -rf /src; \
-     rm -rf /pom.xml;
+     mv /target/*.jar /app/; 
+#     rm -rf /target; \
+#     rm -rf /src; \
+#     rm -rf /pom.xml;
 
 COPY src/mysql/init/* /docker-entrypoint-initdb.d/
 

@@ -1,5 +1,8 @@
 package com.example.test.Repo;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,25 +11,32 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+@Component
 public class DBManager {
     private static Connection con = null;
 
+    private static String URL, USER, PASSWORD;
+
+    @Value("${spring.datasource.url}")
+    public void setURL(String url){
+        URL = url;
+    }
+
+    @Value("${spring.datasource.user}")
+    public void setUSER(String user){
+        USER = user;
+    }
+    
+    @Value("${spring.datasource.password}")
+    public void setPASSWORD(String password){
+        PASSWORD = password;
+    }
     public static Connection getConnection(){
         if (con != null) return con;
-        String user = null, password= null, url = null;
-        try (InputStream input = new FileInputStream("src/main/resources/application.properties")){
-            Properties properties = new Properties();
-            properties.load(input);
-            url = properties.getProperty("spring.datasource.url");
-            user = properties.getProperty("spring.datasource.username");
-            password = properties.getProperty("spring.datasource.password");
-        }catch(IOException ex){
-            ex.printStackTrace();
-        }
         try{
-            con = DriverManager.getConnection(url, user, password);
+            con = DriverManager.getConnection(URL, USER, PASSWORD);
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return con;
     }
