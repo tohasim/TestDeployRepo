@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("Test")
 public class TestController {
     private Repo database;
-    public TestController(ApplicationContext context, @Value("${Test.repository.impl}") String impl) {
+    public TestController(ApplicationContext context, @Value("${test.repository.impl}") String impl) {
         this.database = (Repo) context.getBean(impl);
     }
 
